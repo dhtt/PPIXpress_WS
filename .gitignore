@@ -33,3 +33,6 @@ com/example/PPIXpressWS/maven-metadata*
 com/example/PPIXpressWS/1.0-SNAPSHOT/maven-metadata*
 __MACOSX*
 src/main/webapp/js/__pycache__/*
+com/example/PPIWS/*-SNAPSHOT/*
+_*
+deployment_note.md

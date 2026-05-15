@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import pandas as pd
 import numpy as np
 import json
@@ -33,6 +35,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Interactive GO plot')
     parser.add_argument('--input_file', help="Path to the GO analysis result in json format", type=str)
     parser.add_argument('--output_file', help="Path to the GO analysis plot in html format", type=str)
+    parser.add_argument('--GO_layout', help="Path to the GO layout json file", type=str)
     parser.add_argument('--sort_by', help="Column to sort GO terms. Options: FDR, p_value, fold_enrichment",
                         default='p_value', type=str)
     parser.add_argument('--color_by', help="Column to color GO terms. Options: FDR, p_value, fold_enrichment",
@@ -43,8 +46,9 @@ if __name__ == '__main__':
                         default=25, type=int)
     args = parser.parse_args()
     
-    input_file = args.input_file #"/home/trang/PPIWS/repository/example_run/PPIXpress/OUTPUT/test.json"
-    output_file = args.output_file #'/home/trang/PPIWS/repository/example_run/PPIXpress/OUTPUT/GO_df.temp.json'
+    input_file = args.input_file 
+    output_file = args.output_file 
+    GO_layout = args.GO_layout 
     sort_by = args.sort_by
     color_by = args.color_by
     sig_cutoff = args.sig_cutoff
@@ -55,7 +59,7 @@ if __name__ == '__main__':
         df = pd.DataFrame(data['results']['result'])
         df = prepare_data(df)
         
-    with open('/home/trang/PPIWS/src/main/webapp/resources/PantherDB/GO_layout.json', 'r') as f:
+    with open(GO_layout, 'r') as f:
         main_layout = json.load(f)
         
     labels = {'FDR': '-Log(FDR)', 'p_value': '-Log(p-value)', 'fold_enrichment': 'Fold Enrichment'}

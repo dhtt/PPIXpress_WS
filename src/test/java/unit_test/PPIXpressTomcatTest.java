@@ -1,5 +1,6 @@
 package unit_test;
 
+import com.webserver.Config;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -58,8 +59,9 @@ public class PPIXpressTomcatTest {
     // @Test
     public void testWatchService(){
           // Create a watch event for log file
+        String BASE_PATH = Config.get("base.path"); 
 
-        String OUTPUT_PATH = "/home/trang/PPIWS/repository/example_run/PPIXpress/OUTPUT/";
+        String OUTPUT_PATH = BASE_PATH + "/repository/example_run/PPIXpress/OUTPUT/";
         try (WatchService watchService = FileSystems.getDefault().newWatchService();){
             Path OUTPUT_PATH_DIR = Paths.get(OUTPUT_PATH);
             WatchKey watchKey = OUTPUT_PATH_DIR.register(watchService, ENTRY_CREATE, ENTRY_MODIFY);

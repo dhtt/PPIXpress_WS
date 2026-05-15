@@ -3,6 +3,7 @@ package com.webserver;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
+import com.webserver.Config;
 
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecutor;
@@ -46,8 +47,9 @@ public class DownloadServlet extends HttpServlet {
             resultFileType =  request.getParameter("resultFileType") == null ? "" : request.getParameter("resultFileType").toString();
             
             // Define the path to the folder where INPUT and OUTPUT are stored for each user/example run
-            LOCAL_STORAGE_PATH = USER_ID.equals("EXAMPLE_USER") ? 
-                "/home/trang/PPIWS/repository/example_run/" + PROGRAM + "/" : "/home/trang/PPIWS/repository/uploads/" + USER_ID + "/" + PROGRAM + "/"; 
+            String BASE_PATH = Config.get("base.path");
+            LOCAL_STORAGE_PATH = USER_ID.equals("EXAMPLE_USER") ? BASE_PATH + "/" +
+                "repository/example_run/" + PROGRAM + "/" : "repository/uploads/" + USER_ID + "/" + PROGRAM + "/"; 
             OUTPUT_PATH = LOCAL_STORAGE_PATH + "OUTPUT/";
 
             // Internal log 
@@ -237,9 +239,12 @@ public class DownloadServlet extends HttpServlet {
 
                             // 3. Parse GO analysis result and create plot using Python script
                             try {
-                                String commandLine = "python3.12 /home/trang/PPIWS/src/main/webapp/js/interactive_GO.py" + 
-                                    " --input_file " + GO_OUTPUT_FILENAME + " --output_file " + TEMP_DF_FILENAME + 
-                                    " --sort_by " + sort_by + " --color_by " + color_by;
+                                String commandLine = "/home/access/miniconda3/bin/python " + BASE_PATH + "/src/main/webapp/js/interactive_GO.py" + 
+                                    " --input_file " + GO_OUTPUT_FILENAME + 
+                                    " --output_file " + TEMP_DF_FILENAME + 
+                                    " --sort_by " + sort_by + 
+                                    " --color_by " + color_by +
+                                    " --GO_layout " + BASE_PATH + "/src/main/webapp/resources/PantherDB/GO_layout.json";
 
                                 CommandLine cmdLine = CommandLine.parse(commandLine);
                                 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -251,6 +256,7 @@ public class DownloadServlet extends HttpServlet {
 
                             } catch (Exception e) {
                                 logger.error(USER_ID + ": Fail to create GO plot:\n" + e.toString());
+                                e.printStackTrace();
                             }
 
                             // 4. Write plot to response

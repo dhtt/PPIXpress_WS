@@ -1,5 +1,6 @@
 package com.webserver;
 
+import com.webserver.Config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -21,6 +22,7 @@ public class PPICompareServlet extends HttpServlet {
     protected static final Logger logger = LogManager.getLogger(PPICompareServlet.class);
     protected String USER_ID;
     protected String LOCAL_STORAGE_PATH;
+    protected String BASE_PATH = Config.get("base.path");
     protected String INPUT_PATH;
     protected String OUTPUT_PATH;
     protected String GROUP1_PATH;
@@ -111,7 +113,7 @@ public class PPICompareServlet extends HttpServlet {
         if (SUBMIT_TYPE.equals("RunExample")) {
             try {
                 // Define a data local storage on the local server
-                LOCAL_STORAGE_PATH = "/home/trang/PPIWS/repository/example_run/PPICompare/"; 
+                LOCAL_STORAGE_PATH = BASE_PATH + "/repository/example_run/PPICompare/"; 
                 INPUT_PATH = LOCAL_STORAGE_PATH + "INPUT/";
                 OUTPUT_PATH = LOCAL_STORAGE_PATH + "OUTPUT/";
                 GROUP1_PATH = INPUT_PATH + "HSC/";
@@ -133,8 +135,8 @@ public class PPICompareServlet extends HttpServlet {
                 String[] GROUPED_IDs = GROUPED_ID.split("&");
                 for (String ID : GROUPED_IDs) {
                     Utils.copyPPIXpress2PPICompare(
-                        "/home/trang/PPIWS/repository/example_run/PPIXpress/OUTPUT/", 
-                        "/home/trang/PPIWS/repository/example_run/PPICompare/INPUT/",
+                        BASE_PATH + "/repository/example_run/PPIXpress/OUTPUT/", 
+                        BASE_PATH + "/repository/example_run/PPICompare/INPUT/",
                         ID);
                 }
                 
@@ -147,7 +149,7 @@ public class PPICompareServlet extends HttpServlet {
         else if (SUBMIT_TYPE.equals("RunNormal")) {
             try {
                 // Define a data local storage on the local server
-                LOCAL_STORAGE_PATH = "/home/trang/PPIWS/repository/uploads/" + USER_ID + "/PPICompare/"; 
+                LOCAL_STORAGE_PATH = BASE_PATH + "/repository/uploads/" + USER_ID + "/PPICompare/"; 
 
                 // Create input directory
                 Utils.createUserDir(LOCAL_STORAGE_PATH); 
@@ -167,8 +169,8 @@ public class PPICompareServlet extends HttpServlet {
                         for (int i = 1; i <= GROUPED_IDs.length; i++) {
                             String ID  = GROUPED_IDs[i-1];
                             String inputFilesPath = Utils.copyPPIXpress2PPICompare(
-                                "/home/trang/PPIWS/repository/uploads/" + SOURCE_USER_ID + "/PPIXpress/OUTPUT/", 
-                                "/home/trang/PPIWS/repository/uploads/" + USER_ID + "/PPICompare/INPUT/",
+                                BASE_PATH + "/repository/uploads/" + SOURCE_USER_ID + "/PPIXpress/OUTPUT/", 
+                                BASE_PATH + "/repository/uploads/" + USER_ID + "/PPICompare/INPUT/",
                                 ID);
                             allArgs.add("-group_" + i + "=" + inputFilesPath);
                         }

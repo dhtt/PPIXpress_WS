@@ -1,5 +1,6 @@
 package com.webserver;
 
+import com.webserver.Config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -21,6 +22,7 @@ public class PPIXpressServlet extends HttpServlet {
     protected static final Logger logger = LogManager.getLogger(PPIXpressServlet.class);
     private String USER_ID;
     private String LOCAL_STORAGE_PATH;
+    protected String BASE_PATH = Config.get("base.path");
     private String INPUT_PATH;
     private String OUTPUT_PATH;
     private String FILENAME_PPI;
@@ -109,7 +111,7 @@ public class PPIXpressServlet extends HttpServlet {
         if (SUBMIT_TYPE.equals("RunExample")) {
             try {
                 // Define a data local storage on the local server
-                LOCAL_STORAGE_PATH = "/home/trang/PPIWS/repository/example_run/PPIXpress/"; 
+                LOCAL_STORAGE_PATH = BASE_PATH + "/repository/example_run/PPIXpress/"; 
                 INPUT_PATH = LOCAL_STORAGE_PATH + "INPUT/";
                 OUTPUT_PATH = LOCAL_STORAGE_PATH + "OUTPUT/";
                 FILENAME_PPI = "example_ppi_data.sif";
@@ -149,7 +151,7 @@ public class PPIXpressServlet extends HttpServlet {
         else if (SUBMIT_TYPE.equals("RunNormal")) {
             try {
                 // Define a data local storage on the local server
-                LOCAL_STORAGE_PATH = "/home/trang/PPIWS/repository/uploads/" + USER_ID + "/PPIXpress/"; 
+                LOCAL_STORAGE_PATH = BASE_PATH + "/repository/uploads/" + USER_ID + "/PPIXpress/"; 
 
                 // Create input directory
                 Utils.createUserDir(LOCAL_STORAGE_PATH); 

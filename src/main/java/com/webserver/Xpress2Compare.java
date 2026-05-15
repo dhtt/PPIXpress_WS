@@ -1,5 +1,6 @@
 package com.webserver;
 
+import com.webserver.Config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -22,6 +23,7 @@ public class Xpress2Compare extends HttpServlet {
     protected String OUTPUT_PATH;
     protected String OUTPUT_FILENAME;
     protected String LOCAL_STORAGE_PATH;
+    protected String BASE_PATH = Config.get("base.path");
     protected String SAMPLE_FILENAME;
     protected String SUBMIT_TYPE;
     protected String resultFileType;
@@ -42,7 +44,7 @@ public class Xpress2Compare extends HttpServlet {
             
             // Define the path to the folder where INPUT and OUTPUT are stored for each user/example run
             LOCAL_STORAGE_PATH = USER_ID.equals("EXAMPLE_USER") ? 
-                "/home/trang/PPIWS/repository/example_run/" + PROGRAM + "/" : "/home/trang/PPIWS/repository/uploads/" + USER_ID + "/" + PROGRAM + "/"; 
+                BASE_PATH + "/repository/example_run/" + PROGRAM + "/" : BASE_PATH + "/repository/uploads/" + USER_ID + "/" + PROGRAM + "/"; 
             OUTPUT_PATH = LOCAL_STORAGE_PATH + "OUTPUT/";
             OUTPUT_FILENAME = "ResultFiles.zip"; 
 

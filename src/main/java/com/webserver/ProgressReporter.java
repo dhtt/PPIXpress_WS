@@ -1,5 +1,6 @@
 package com.webserver;
 
+import com.webserver.Config;
 import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -20,6 +21,7 @@ public class ProgressReporter extends HttpServlet {
         protected String SUBMIT_TYPE;
         protected String RUN_PROGRESS_LOG;
         protected String LOCAL_STORAGE_PATH;
+        protected String BASE_PATH = Config.get("base.path");
         protected Boolean UPDATE_LONG_PROCESS_STOP_SIGNAL;
         protected int NO_EXPRESSION_FILE;
         protected JSONObject POSTData = new JSONObject();
@@ -48,8 +50,8 @@ public class ProgressReporter extends HttpServlet {
 
                         // LOCAL_STORAGE_PATH is the path to the folder where INPUT and OUTPUT are stored for each user/example run
                         LOCAL_STORAGE_PATH = USER_ID.equals("EXAMPLE_USER") ? 
-                                "/home/trang/PPIWS/repository/example_run/" + PROGRAM + "/" : 
-                                "/home/trang/PPIWS/repository/uploads/" + USER_ID + "/" + PROGRAM + "/"; 
+                                BASE_PATH + "/repository/example_run/" + PROGRAM + "/" : 
+                                BASE_PATH + "/repository/uploads/" + USER_ID + "/" + PROGRAM + "/"; 
 
                         // Get the process log stored in "/OUTPUT/PPIXpress_log.html". Log is updated by the process from standalone_tools:PPIXpress or PPIXCompare
                         // The file name must be the same as defined for log_file in PPICompare_Tomcat.java or PPIXpress_Tomcat.java and 
